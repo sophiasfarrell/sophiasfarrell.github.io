@@ -24,3 +24,5 @@ If the CMS strips `<script>`, the iframe still works; it just stays at a fixed h
 Link straight to a major: add `?m=journalism` (comma-separate up to four).
 
 Updating data: run the conversion script against a new spreadsheet to rewrite `majors/data.json`.
+
+Making a change to trigger a redeloy.
