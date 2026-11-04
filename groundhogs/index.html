@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Groundhog Day Predictor Search</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f6f4ef; --text: #1f2328; --muted: #5d6570; --border: #dcd8cf;
+      --accent: #7a4b1e; --shadow: #1f5fa8; --spring: #e08a1e; --none: #e9e6df;
+      --focus: #1f5fa8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #16181b; --surface: #202327; --text: #eceae4; --muted: #a3a9b1; --border: #363a40;
+        --accent: #d9a066; --shadow: #5b9be0; --spring: #f0a64a; --none: #2c3035; --focus: #8fbcf0;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 16px; background: var(--bg); color: var(--text);
+      font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: var(--accent); }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 16px; font-size: .95rem; }
+    .controls { display: grid; gap: 12px; grid-template-columns: 2fr 1fr 1fr; margin-bottom: 12px; }
+    label { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+    input, select { width: 100%; padding: 10px; font: inherit; color: var(--text); background: var(--bg);
+      border: 1px solid var(--border); border-radius: 6px; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+    .bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+      margin: 8px 0 12px; font-size: .9rem; color: var(--muted); }
+    .bar .right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .bar select { width: auto; padding: 6px 8px; }
+    button.link { background: none; border: 0; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: .85rem; margin-bottom: 16px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+    .sw.s { background: var(--shadow); } .sw.e { background: var(--spring); }
+    .sw.n { background: var(--none); border: 1px dashed var(--muted); }
+    ul.results { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .card { border: 1px solid var(--border); border-radius: 10px; padding: 14px; background: var(--surface); }
+    .head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .card h2 { font-size: 1.15rem; margin: 0; }
+    .meta { color: var(--muted); font-size: .9rem; margin: 2px 0 0; }
+    .badge { font-size: .75rem; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); white-space: nowrap; align-self: flex-start; }
+    .stats { display: flex; gap: 20px; flex-wrap: wrap; margin: 12px 0 8px; }
+    .stat b { display: block; font-size: 1.25rem; line-height: 1.1; }
+    .stat span { font-size: .78rem; color: var(--muted); }
+    .strip { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2px; margin-top: 6px; }
+    .strip i { height: 18px; border-radius: 2px; display: block; background: var(--none); }
+    .strip i.s { background: var(--shadow); } .strip i.e { background: var(--spring); }
+    .strip i.n { background: transparent; border: 1px dashed var(--border); }
+    .axis { display: flex; justify-content: space-between; font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    details { margin-top: 10px; font-size: .9rem; }
+    summary { cursor: pointer; color: var(--accent); }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: .85rem; }
+    th, td { text-align: left; padding: 3px 8px 3px 0; border-bottom: 1px solid var(--border); }
+    .tablewrap { max-height: 220px; overflow: auto; }
+    .empty { padding: 24px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: 10px; }
+    .note { color: var(--muted); font-size: .8rem; margin-top: 20px; }
+    @media (max-width: 640px) { .controls { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Groundhog Day Predictor Search</h1>
+    <p class="sub">Search weather-predicting animals by name, state or province, and type of creature, and see each one's year-by-year track record.</p>
+
+    <form class="controls" role="search" onsubmit="return false">
+      <div><label for="q">Name</label><input id="q" type="search" placeholder="e.g. Phil, Willie, Chuck" autocomplete="off"></div>
+      <div><label for="region">State / province</label><select id="region"><option value="">All</option></select></div>
+      <div><label for="type">Type of creature</label><select id="type"><option value="">All</option></select></div>
+    </form>
+
+    <div class="bar">
+      <span id="count" aria-live="polite">Loading…</span>
+      <span class="right">
+        <button class="link" id="reset" type="button">Reset filters</button>
+        <span><label for="sort" style="display:inline;margin-right:4px">Sort by</label>
+          <select id="sort">
+            <option value="count">Most predictions</option>
+            <option value="shadow">% shadow (high to low)</option>
+            <option value="noshadow">% no shadow (high to low)</option>
+            <option value="name">Name (A–Z)</option>
+          </select></span>
+      </span>
+    </div>
+
+    <div class="legend" aria-hidden="true">
+      <span><i class="sw s"></i> Saw shadow: six more weeks of winter</span>
+      <span><i class="sw e"></i> No shadow: early spring</span>
+      <span><i class="sw n"></i> No prediction recorded</span>
+    </div>
+
+    <ul class="results" id="results"></ul>
+
+    <p class="note">Data: predictions from <a href="https://groundhog-day.com">groundhog-day.com</a>, 1990 onward. The dataset records each animal’s prediction, not the actual weather that followed, so the track record shows what each predicted, not whether it was right.</p>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script>
+    const REMOTE = "https://the-art-of-data-journalism.github.io/tutorial-data/groundhogs/predictions.csv";
+    const LOCAL = "predictions.csv";
+    const $ = id => document.getElementById(id);
+    let animals = [], YEARS = [];
+
+    async function loadCsv() {
+      for (const url of [REMOTE, LOCAL]) {
+        try {
+          const res = await fetch(url);
+          if (res.ok) return Papa.parse(await res.text(), { header: true, skipEmptyLines: true }).data;
+        } catch (e) { /* try next source */ }
+      }
+      throw new Error("Could not load data");
+    }
+
+    function build(rows) {
+      const by = new Map();
+      for (const r of rows) {
+        if (!by.has(r.id)) by.set(r.id, { id: r.id, name: r.name, city: r.city, region: r.region, country: r.country,
+          type: r.type, active: r.active === "1", desc: r.description, source: r.source, total: +r.predictionsCount || 0, preds: new Map() });
+        const a = by.get(r.id);
+        a.preds.set(+r.year, { shadow: r.shadow === "1" ? 1 : r.shadow === "0" ? 0 : null, details: r.details });
+      }
+      const ys = rows.map(r => +r.year);
+      const min = Math.min(...ys), max = Math.max(...ys);
+      YEARS = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+      for (const a of by.values()) {
+        const v = [...a.preds.values()].filter(p => p.shadow !== null);
+        a.made = v.length;
+        a.sh = v.filter(p => p.shadow === 1).length;
+        a.ns = v.length - a.sh;
+        a.pctSh = v.length ? a.sh / v.length : -1;
+        a.pctNs = v.length ? a.ns / v.length : -1;
+      }
+      return [...by.values()];
+    }
+
+    function fillSelect(el, values) {
+      for (const [v, n] of values) el.add(new Option(`${v} (${n})`, v));
+    }
+    function tally(key) {
+      const m = new Map();
+      for (const a of animals) m.set(a[key], (m.get(a[key]) || 0) + 1);
+      return [...m].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]));
+    }
+
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const pct = (n, d) => d ? Math.round(100 * n / d) + "%" : "–";
+
+    function card(a) {
+      const strip = YEARS.map(y => {
+        const p = a.preds.get(y);
+        const cls = !p || p.shadow === null ? "n" : p.shadow ? "s" : "e";
+        const word = !p ? "not in dataset" : p.shadow === null ? "no prediction recorded" : p.shadow ? "saw shadow, six more weeks of winter" : "no shadow, early spring";
+        return `<i class="${cls}" title="${y}: ${word}" role="img" aria-label="${y}: ${word}"></i>`;
+      }).join("");
+      const rows = [...a.preds].sort((x, y) => y[0] - x[0]).map(([y, p]) =>
+        `<tr><td>${y}</td><td>${p.shadow === null ? "No prediction recorded" : p.shadow ? "Shadow (6 more weeks of winter)" : "No shadow (early spring)"}</td></tr>`).join("");
+      return `<li class="card">
+        <div class="head">
+          <div><h2>${esc(a.name)}</h2><p class="meta">${esc(a.city)}, ${esc(a.region)} · ${esc(a.country)} · ${esc(a.type)}</p></div>
+          <span class="badge">${a.active ? "Active" : "Inactive"}</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>${a.made}</b><span>predictions since ${YEARS[0]}</span></div>
+          <div class="stat"><b>${a.sh} <small>(${pct(a.sh, a.made)})</small></b><span>saw shadow</span></div>
+          <div class="stat"><b>${a.ns} <small>(${pct(a.ns, a.made)})</small></b><span>no shadow</span></div>
+        </div>
+        <div class="strip" style="--n:${YEARS.length}">${strip}</div>
+        <div class="axis"><span>${YEARS[0]}</span><span>${YEARS[YEARS.length - 1]}</span></div>
+        <details><summary>Year-by-year and about</summary>
+          <p>${esc(a.desc || "")}</p>
+          <div class="tablewrap"><table><thead><tr><th>Year</th><th>Prediction</th></tr></thead><tbody>${rows}</tbody></table></div>
+          ${/^https?:/.test(a.source) ? `<a href="${esc(a.source)}" target="_blank" rel="noopener">Source</a>` : ""}
+        </details>
+      </li>`;
+    }
+
+    function render() {
+      const q = $("q").value.trim().toLowerCase(), reg = $("region").value, typ = $("type").value, sort = $("sort").value;
+      const out = animals.filter(a => (!q || a.name.toLowerCase().includes(q)) && (!reg || a.region === reg) && (!typ || a.type === typ));
+      const cmp = { count: (a, b) => b.made - a.made, shadow: (a, b) => b.pctSh - a.pctSh || b.made - a.made,
+        noshadow: (a, b) => b.pctNs - a.pctNs || b.made - a.made, name: (a, b) => a.name.localeCompare(b.name) }[sort];
+      out.sort(cmp);
+      $("count").textContent = `${out.length} of ${animals.length} predictors`;
+      $("results").innerHTML = out.length ? out.map(card).join("") : `<li class="empty">No predictors match. Try clearing a filter.</li>`;
+      postHeight();
+    }
+
+    function postHeight() {
+      if (window.parent !== window)
+        window.parent.postMessage({ type: "groundhog-search-height", height: document.documentElement.scrollHeight }, "*");
+    }
+
+    loadCsv().then(rows => {
+      animals = build(rows);
+      fillSelect($("region"), tally("region").sort((x, y) => x[0].localeCompare(y[0])));
+      fillSelect($("type"), tally("type"));
+      ["q", "region", "type", "sort"].forEach(id => $(id).addEventListener("input", render));
+      $("reset").addEventListener("click", () => { $("q").value = ""; $("region").value = ""; $("type").value = ""; render(); });
+      render();
+    }).catch(() => { $("count").textContent = "Sorry, the data could not be loaded."; });
+
+    new ResizeObserver(postHeight).observe(document.body);
+  </script>
+</body>
+</html>
