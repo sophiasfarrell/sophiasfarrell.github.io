@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Union Build | The Daily Nebraskan</title>
+  <meta name="description" content="A Tetris-style game about the Nebraska Union food court renovation. Build five restaurants while students complain the construction is too slow.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Roboto+Condensed:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="dn-logo" href="https://www.dailynebraskan.com/" target="_blank" rel="noopener">Daily Nebraskan</a>
+      <p class="tagline">Student voice of the University of Nebraska-Lincoln since 1901</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="title-row">
+      <div>
+        <p class="kicker">Daily Nebraskan Games</p>
+        <h1>Union Build</h1>
+      </div>
+      <p class="sub">Rebuild the Nebraska Union food court, one line at a time. Finish all five restaurants before the students lose their patience.</p>
+    </div>
+
+    <!-- Restaurant progress strip -->
+    <ol class="strip" id="strip" aria-label="Restaurants"></ol>
+
+    <div class="game">
+      <aside class="panel left">
+        <div class="card store-card" id="store-card">
+          <p class="label">The storefront</p>
+          <div class="store">
+            <img id="store-img" src="assets/storefronts/imperial.jpg" alt="">
+            <div class="hoarding" id="hoarding">
+              <span><i>Coming soon</i><b id="hoard-text"></b></span>
+            </div>
+          </div>
+        </div>
+        <div class="card" id="current-card">
+          <p class="label">Now building</p>
+          <h2 id="cur-name">-</h2>
+          <p class="note" id="cur-tag"></p>
+          <div class="pips" id="pips" aria-label="Sections"></div>
+          <p class="section-name" id="cur-section">-</p>
+        </div>
+        <div class="card stats">
+          <div><span class="label">Score</span><b id="score">0</b></div>
+          <div><span class="label">Lines</span><b id="lines">0</b></div>
+          <div><span class="label">Speed</span><b id="speed">1.0x</b></div>
+        </div>
+        <div class="card controls-help">
+          <p class="label">Controls</p>
+          <ul>
+            <li><kbd>&larr;</kbd><kbd>&rarr;</kbd> Move</li>
+            <li><kbd>&uarr;</kbd> / <kbd>X</kbd> Rotate</li>
+            <li><kbd>&darr;</kbd> Soft drop</li>
+            <li><kbd>Space</kbd> Hard drop</li>
+            <li><kbd>P</kbd> Pause</li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="board-wrap">
+        <canvas id="board" width="300" height="600" aria-label="Game board"></canvas>
+
+        <div class="overlay" id="overlay">
+          <div class="overlay-card" id="overlay-card"></div>
+        </div>
+      </section>
+
+      <aside class="panel right">
+        <div class="card">
+          <p class="label">Next delivery</p>
+          <canvas id="next" width="120" height="90"></canvas>
+          <p class="note" id="next-name"></p>
+        </div>
+        <div class="card">
+          <p class="label">Patience meter</p>
+          <div class="meter"><div id="patience"></div></div>
+          <p class="note" id="complaint-count">0 complaints filed</p>
+        </div>
+        <div class="card complaint-card" id="complaint-card">
+          <p class="label">Latest complaint</p>
+          <div class="face" id="c-face"></div>
+          <b class="who" id="c-who">Nobody yet</b>
+          <p class="quote" id="c-text">Everyone is waiting patiently. For now.</p>
+          <p class="faster" id="c-faster" hidden>Blocks now fall faster!</p>
+        </div>
+        <div class="touch" id="touch">
+          <button data-act="left" aria-label="Move left">&larr;</button>
+          <button data-act="rotate" aria-label="Rotate">&#8635;</button>
+          <button data-act="right" aria-label="Move right">&rarr;</button>
+          <button data-act="down" aria-label="Soft drop">&darr;</button>
+          <button data-act="drop" aria-label="Hard drop" class="wide">Drop</button>
+        </div>
+      </aside>
+    </div>
+
+    <p class="disclaimer">Satire. Complaints are fictional and for fun. Restaurant renderings and logos belong to their respective owners and the University of Nebraska-Lincoln. Details of the renovation are subject to change.</p>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span class="dn-logo small">Daily Nebraskan</span>
+      <a href="https://www.dailynebraskan.com/" target="_blank" rel="noopener">dailynebraskan.com</a>
+    </div>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>
