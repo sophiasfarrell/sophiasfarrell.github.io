@@ -39,7 +39,7 @@
   const overlay = $('overlay');
 
   const params = new URLSearchParams(location.search);
-  if (params.has('embed') || window.self !== window.top) document.body.classList.add('embed');
+  if (params.has('embed')) document.body.classList.add('embed');
 
   // ---------- storage ----------
   const store = {
