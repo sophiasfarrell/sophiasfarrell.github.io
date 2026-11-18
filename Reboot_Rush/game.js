@@ -71,6 +71,7 @@
   const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   if (isTouch) document.body.classList.add('touch');
   const params = new URLSearchParams(location.search);
+  if (params.has('embed') || window.self !== window.top) document.body.classList.add('embed');
 
   const rnd = (n) => Math.floor(Math.random() * n);
   const pick = (a) => a[rnd(a.length)];
