@@ -17,7 +17,7 @@
     <div class="hud-top">
       <div class="timer" id="timer" aria-live="off">3:00</div>
       <div class="prog">
-        <div class="prog-label"><span>SERVICES RESTORED</span><span id="progText">0/8</span></div>
+        <div class="prog-label"><span id="lvlText">LEVEL 1/3</span><span id="progText">0/9</span></div>
         <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
       </div>
       <button class="btn small alt" id="helpBtn" type="button" aria-label="How to play">?</button>
@@ -54,15 +54,15 @@
     <div class="screen howto" id="howto">
       <div class="howto-box">
         <h1>REBOOT RUSH</h1>
-        <p class="goal">The internet is DOWN! Fix all <b>8 servers</b> before the timer hits <b>0:00</b>.</p>
+        <p class="goal">The internet is DOWN! Beat <b>3 levels</b>, one outage at a time: <b>Outlook Mail</b>, then <b>Banking</b>, then the <b>FAA Network</b>. You have <b>3:00</b> in total.</p>
         <ol class="steps">
-          <li><span class="n">1</span><div><b>MOVE</b> around the facility.<br><em>Keyboard: W A S D or arrow keys. Phone: the on-screen arrows.</em></div></li>
-          <li><span class="n">2</span><div><b>COLLECT</b> <i class="chip"></i> chips and <i class="cab" style="background:#ff9f1c"></i><i class="cab" style="background:#35e0ff"></i> cables by walking over them.<br><em>Each repair uses 1 chip + 2 cables. Check your PACK at the top.</em></div></li>
+          <li><span class="n">1</span><div><b>MOVE</b> around the server room.<br><em>Keyboard: W A S D or arrow keys. Phone: the on-screen arrows.</em></div></li>
+          <li><span class="n">2</span><div><b>COLLECT</b> <img class="ico" data-icon="chip" alt="RAM chip"> memory chips and <img class="ico" data-icon="cable" data-color="#35e0ff" alt="network cable"><img class="ico" data-icon="cable" data-color="#ff9f1c" alt="network cable"> network cables by walking over them.<br><em>Each repair uses 1 chip + 2 cables. Check your PACK at the top.</em></div></li>
           <li><span class="n">3</span><div><b>FIND A BROKEN SERVER</b> (blinking <i class="led-red"></i> red light) and stand next to it. Press <b>E</b> or <b>Space</b> (phone: the <b>A</b> button).</div></li>
-          <li><span class="n">4</span><div><b>SOLVE THE PUZZLE:</b> tap a cable, then the port with the same color and shape. Match them all!<br><em>Done = the light turns <i class="led-green"></i> green and a service comes back online.</em></div></li>
-          <li><span class="n">!</span><div><b>AVOID</b> the flashing zap plates and roaming spark bots. Each zap costs you <b>5 seconds</b>. A wrong port costs 2 seconds.</div></li>
+          <li><span class="n">4</span><div><b>SOLVE THE PUZZLE:</b> tap a cable, then the port with the same color and shape.<br><em>Fix every server in the room to clear the level. Clear a level to earn +25 seconds!</em></div></li>
+          <li><span class="n">!</span><div><b>DODGE</b> the <b>ANGRY PEOPLE</b> who are mad about the outage, and the flashing zap plates. Each hit costs <b>5 seconds</b>. A wrong port costs 2 seconds.</div></li>
         </ol>
-        <p class="tip">TIP: Grab a few chips and cables first, then repair servers one room at a time. It gets harder after each repair!</p>
+        <p class="tip">TIP: Each level has more servers, more angry people and bigger puzzles. Grab parts first, then repair!</p>
         <button class="btn" id="hwBtn" type="button">START GAME</button>
       </div>
     </div>
