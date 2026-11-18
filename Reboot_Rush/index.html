@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Reboot Rush | Server Repair Arcade</title>
+<meta name="description" content="Retro top-down arcade game: repair broken servers and restore the internet in three minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="hud">
+    <div class="hud-top">
+      <div class="timer" id="timer" aria-live="off">3:00</div>
+      <div class="prog">
+        <div class="prog-label"><span>SERVICES RESTORED</span><span id="progText">0/8</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      </div>
+      <button class="btn small alt" id="helpBtn" type="button" aria-label="How to play">?</button>
+      <button class="btn small" id="restartBtn" type="button">RESTART</button>
+    </div>
+    <div class="inv" id="inv" aria-label="Inventory">
+      <span class="inv-label">PACK</span>
+      <span class="slot" id="invCables"></span>
+      <span class="slot" id="invChips"></span>
+    </div>
+    <div class="news" id="news" role="status" aria-live="polite">
+      <span class="news-tag">NEWS</span><span id="newsText"></span>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="screen" width="320" height="240" aria-label="Game screen"></canvas>
+    <div class="crt"></div>
+    <div class="toast" id="toast" hidden></div>
+
+    <div class="pz" id="puzzle" hidden>
+      <div class="pz-box">
+        <div class="pz-title" id="pzTitle"></div>
+        <div class="pz-sub">TAP A CABLE, THEN ITS MATCHING PORT</div>
+        <div class="pz-board" id="pzBoard">
+          <svg id="pzLines" aria-hidden="true"></svg>
+          <div class="pz-col" id="pzPlugs"></div>
+          <div class="pz-col" id="pzPorts"></div>
+        </div>
+        <div class="pz-foot"><span id="pzInfo">WRONG PORT = -2s</span><button class="btn small" id="pzCancel" type="button">BACK</button></div>
+      </div>
+    </div>
+
+    <div class="screen howto" id="howto">
+      <div class="howto-box">
+        <h1>REBOOT RUSH</h1>
+        <p class="goal">The internet is DOWN! Fix all <b>8 servers</b> before the timer hits <b>0:00</b>.</p>
+        <ol class="steps">
+          <li><span class="n">1</span><div><b>MOVE</b> around the facility.<br><em>Keyboard: W A S D or arrow keys. Phone: the on-screen arrows.</em></div></li>
+          <li><span class="n">2</span><div><b>COLLECT</b> <i class="chip"></i> chips and <i class="cab" style="background:#ff9f1c"></i><i class="cab" style="background:#35e0ff"></i> cables by walking over them.<br><em>Each repair uses 1 chip + 2 cables. Check your PACK at the top.</em></div></li>
+          <li><span class="n">3</span><div><b>FIND A BROKEN SERVER</b> (blinking <i class="led-red"></i> red light) and stand next to it. Press <b>E</b> or <b>Space</b> (phone: the <b>A</b> button).</div></li>
+          <li><span class="n">4</span><div><b>SOLVE THE PUZZLE:</b> tap a cable, then the port with the same color and shape. Match them all!<br><em>Done = the light turns <i class="led-green"></i> green and a service comes back online.</em></div></li>
+          <li><span class="n">!</span><div><b>AVOID</b> the flashing zap plates and roaming spark bots. Each zap costs you <b>5 seconds</b>. A wrong port costs 2 seconds.</div></li>
+        </ol>
+        <p class="tip">TIP: Grab a few chips and cables first, then repair servers one room at a time. It gets harder after each repair!</p>
+        <button class="btn" id="hwBtn" type="button">START GAME</button>
+      </div>
+    </div>
+
+    <div class="screen" id="overlay" hidden>
+      <div class="screen-box">
+        <h1 id="ovTitle"></h1>
+        <p id="ovText"></p>
+        <button class="btn" id="ovBtn" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <div class="dpad" aria-label="Directional buttons">
+      <button class="d up" data-dir="up" type="button" aria-label="Up">▲</button>
+      <button class="d left" data-dir="left" type="button" aria-label="Left">◀</button>
+      <button class="d right" data-dir="right" type="button" aria-label="Right">▶</button>
+      <button class="d down" data-dir="down" type="button" aria-label="Down">▼</button>
+    </div>
+    <button class="act" id="actBtn" type="button">A<span>FIX</span></button>
+  </div>
+
+  <div class="board">
+    <div class="board-title">SERVICE BOARD</div>
+    <ul id="svcList"></ul>
+    <p class="keys">MOVE: WASD / ARROWS &nbsp; FIX: E / SPACE</p>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
