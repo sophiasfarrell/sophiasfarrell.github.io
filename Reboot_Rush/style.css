@@ -58,6 +58,7 @@ button{font-family:var(--font);cursor:pointer}
 .screen.howto[hidden]{display:none}
 .howto-box{max-width:600px;width:100%;margin:auto;display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.6vw,12px);padding:4px 0}
 .howto h1{font-size:clamp(13px,4vw,22px)}
+.howto .blurb{font-size:clamp(6px,1.6vw,8px);line-height:1.9;color:#cfe3ff;text-align:left;background:#0b1540;border-left:4px solid var(--red);padding:clamp(6px,1.6vw,10px) clamp(8px,2vw,12px);margin:0;width:100%}
 .howto .goal{font-size:clamp(7px,1.9vw,10px);color:#fff}
 .howto .goal b{color:var(--amber)}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(4px,1.2vw,8px);width:100%;text-align:left}

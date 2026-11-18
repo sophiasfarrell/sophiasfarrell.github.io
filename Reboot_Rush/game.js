@@ -694,7 +694,7 @@
   function openHowto(fromGame) {
     if (fromGame && ['play', 'puzzle', 'card'].includes(S.mode)) { S.pausedFrom = S.mode; S.mode = 'paused'; }
     $('hwBtn').textContent = S.mode === 'title' ? 'START GAME' : 'BACK TO GAME';
-    $('howto').hidden = false; $('howto').scrollTop = 0; $('hwBtn').focus();
+    $('howto').hidden = false; $('howto').scrollTop = 0; $('hwBtn').focus({ preventScroll: true });
   }
   function closeHowto() {
     $('howto').hidden = true;
